@@ -1,0 +1,19 @@
+# Instagram Cookies
+crsftoken = ""
+datr = ""
+dpr = ""
+ds_user_id = ""
+ig_did = ""
+mid = ""
+rur = ""
+sessionid = ""
+wd = ""
+
+# Headers
+User-Agent = ""
+X-CSRFToken = ""
+X-Requested-With = ""
+X-IG-App-Id = ""
+
+# User id, same as ds_user_id
+id = ""
