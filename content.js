@@ -47,7 +47,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // Hardcoded App ID, change it if necessary.
 const APP_ID = "936619743392459";
 
-async function getList(listType) {
+async function getList(listType, totalTarget) {
     let users = new Set();
     let hasMore = true;
     let nextMaxId = "";

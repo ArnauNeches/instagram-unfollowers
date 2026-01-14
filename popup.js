@@ -23,7 +23,7 @@ async function onButtonAnalyzeClick(){
     toggle.disabled = true;
 }
 
-chrome.runtime.onMessage.addEventListener((message) =>{
+chrome.runtime.onMessage.addListener((message) =>{
     const title = document.getElementById("scraping-title");
     const followersProgress = document.getElementById("followers");
     const followingProgress = document.getElementById("following");
