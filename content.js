@@ -1,5 +1,27 @@
 "use strict";
 
+function getProfileStats() {
+    const links = Array.from(document.querySelectorAll('a'));
+    
+    const followersLink = links.find(l => l.href.includes('/followers'));
+    const followingLink = links.find(l => l.href.includes('/following'));
+
+    const parseCount = (element) => {
+        if (!element) return 0;
+        const text = element.innerText || element.getAttribute('title') || "0";
+        const match = text.replace(/,/g, '').match(/\d+/);
+        return match ? parseInt(match[0]) : 0;
+    };
+
+    const stats = {
+        totalFollowers: parseCount(followersLink),
+        totalFollowing: parseCount(followingLink)
+    };
+
+    console.log("Detected Stats:", stats);
+    return stats;
+}
+
 function download(filename, text) {
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -49,6 +71,13 @@ async function getList(listType) {
 
             data.users.forEach(user => users.add(user.username));
 
+            chrome.runtime.sendMessage({
+                action: "progress_update",
+                type: listType,
+                current: users.size,
+                total: totalTarget
+            }).catch(err=>{})
+
             nextMaxId = data.next_max_id;
             hasMore = data.has_more; 
 
@@ -71,16 +100,28 @@ chrome.runtime.onMessage.addListener((request) => {
 });
 
 async function startAnalysis(downList) {
-
-    const followers = await getList("followers");
+    const stats = getProfileStats()
+    
+    chrome.runtime.sendMessage({action: "status_change", text: "Fetching followers"});
+    const followers = await getList("followers", stats.totalFollowers);
     if (downList) download("followers.txt", followers.join("\n"));
 
-    const followings = await getList("following");
+    chrome.runtime.sendMessage({action: "following"});
+    const followings = await getList("following", stats.totalFollowing);
     if (downList) download("following.txt", followings.join("\n"));
 
     console.log(`Final counts - Followers: ${followers.length}, Followings: ${followings.length}`);
 
     const dontFollowBack = followings.filter(user => !followers.includes(user));
+
+    chrome.runtime.sendMessage({
+        action: "finished",
+        stats: {
+            followers: followers.length,
+            following: followings.length,
+            unfollowers: dontFollowBack.length,
+        }
+    });
 
     download("unfollowers.txt", dontFollowBack.join("\n"));
 }

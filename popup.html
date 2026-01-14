@@ -8,13 +8,23 @@
 
 <body>
     <h1>Instagram Unfollowers</h1>
-    <div>
+    <div class="content">
         <button id="analyze">Analyze Profile</button>
-        <button id="lists">Download Lists</button>
-        <span id="active"></span>
-    </div>
-    <script src="popup.js"></script>
 
+        <div class="toggle-display">
+            <div class="toggle-text">Download lists</div>
+            <input type="checkbox" id="toggle">
+            <label for="toggle" class="switch"></label>
+        </div>
+        <div class="toggle-message" id="toggle-message">Followers/following lists won't be downloaded.</div>
+        <span id="scraping-title"></span>
+        <span id="followers"></span>
+        <span id="following"></span>
+        <span id="stats"></span>
+    </div>
+
+    <script src="popup.js"></script>
+    
 </body>
 
 </html>
