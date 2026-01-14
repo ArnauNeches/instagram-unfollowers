@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Instagram unfollowers",
+  "version": "1.0",
+  "description": "Get a list with instagram accounts that follow you and you don't follow.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "ig.png"
+  },
+  "permissions": ["scripting", "activeTab"],
+  "host_permissions": ["https://www.instagram.com/*"],
+  "icons": {
+      "16": "ig.png",
+      "48": "ig.png",
+      "128": "ig.png"
+    },
+  "content_scripts": [
+  {
+    "matches": ["https://www.instagram.com/*"],
+    "js": ["content.js"]
+  }
+]
+}
