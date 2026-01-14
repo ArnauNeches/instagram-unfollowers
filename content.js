@@ -106,7 +106,7 @@ async function startAnalysis(downList) {
     const followers = await getList("followers", stats.totalFollowers);
     if (downList) download("followers.txt", followers.join("\n"));
 
-    chrome.runtime.sendMessage({action: "following"});
+    chrome.runtime.sendMessage({action: "status_change", text: "Fetching following"});
     const followings = await getList("following", stats.totalFollowing);
     if (downList) download("following.txt", followings.join("\n"));
 
@@ -116,11 +116,7 @@ async function startAnalysis(downList) {
 
     chrome.runtime.sendMessage({
         action: "finished",
-        stats: {
-            followers: followers.length,
-            following: followings.length,
-            unfollowers: dontFollowBack.length,
-        }
+        unfollowers: dontFollowBack.length
     });
 
     download("unfollowers.txt", dontFollowBack.join("\n"));

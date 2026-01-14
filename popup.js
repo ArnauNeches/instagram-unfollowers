@@ -16,7 +16,6 @@ toggle.addEventListener("change", () => {
     }
 });
 
-
 async function onButtonAnalyzeClick(){
     const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
     chrome.tabs.sendMessage(tab.id, {action: "analyze_profile", downloadLists: toggle.checked});
@@ -30,5 +29,18 @@ chrome.runtime.onMessage.addEventListener((message) =>{
     const followingProgress = document.getElementById("following");
     const stats = document.getElementById("stats");
 
-    
+    if (message.action === "status_change") title.innerText = message.text;
+    if (message.action === "progress_update") {
+        if (message.type === "followers"){
+            followersProgress.innerText = `Scraped followers: ${message.current} / ${message.total}`;
+        } else if (message.type === "following") {
+            followingProgress.innerText = `Scraped following: ${message.current} / ${message.total}`;
+        }
+    }
+    if (message.action === "finished") {
+        title.innerText = "Finished analyzing account"
+        stats.innerText = `Number of unfollowers ${message.unfollowers}`;
+        actionBtn.disabled = false;
+        toggle.disabled = false;
+    }
 });
