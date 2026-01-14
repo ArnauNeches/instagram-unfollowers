@@ -76,7 +76,7 @@ async function startAnalysis(downList) {
     if (downList) download("followers.txt", followers.join("\n"));
 
     const followings = await getList("following");
-    if (downList) download("following.txt", following.join("\n"));
+    if (downList) download("following.txt", followings.join("\n"));
 
     console.log(`Final counts - Followers: ${followers.length}, Followings: ${followings.length}`);
 
