@@ -83,7 +83,7 @@ async function getList(listType, totalTarget) {
 
             console.log(`Fetched ${users.size} users so far...`);
 
-            await sleep(Math.random() * 1000 + 1000);
+            await sleep(Math.random() * 1000 + 500);
 
         } catch (err) {
             console.error("Error fetching:", err);
