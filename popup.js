@@ -5,6 +5,10 @@ document.getElementById("analyze").addEventListener("click", onButtonAnalyzeClic
 const actionBtn = document.getElementById("analyze");
 const toggle = document.getElementById("toggle");
 const toggleMessage = document.getElementById("toggle-message");
+const title = document.getElementById("scraping-title");
+const followersProgress = document.getElementById("followers");
+const followingProgress = document.getElementById("following");
+const stats = document.getElementById("stats");
 
 toggle.addEventListener("change", () => {
     if (!toggle.checked){
@@ -21,13 +25,13 @@ async function onButtonAnalyzeClick(){
     chrome.tabs.sendMessage(tab.id, {action: "analyze_profile", downloadLists: toggle.checked});
     actionBtn.disabled = true;
     toggle.disabled = true;
+    title.innerText = "";
+    followersProgress.innerText = "";
+    followingProgress.innerText = "";
+    stats.innerText= "";
 }
 
 chrome.runtime.onMessage.addListener((message) =>{
-    const title = document.getElementById("scraping-title");
-    const followersProgress = document.getElementById("followers");
-    const followingProgress = document.getElementById("following");
-    const stats = document.getElementById("stats");
 
     if (message.action === "status_change") title.innerText = message.text;
     if (message.action === "progress_update") {
