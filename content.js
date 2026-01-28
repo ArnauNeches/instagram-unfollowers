@@ -51,18 +51,20 @@ async function getList(listType, totalTarget) {
     let users = new Set();
     let hasMore = true;
     let nextMaxId = "";
+    const cookieUserId = getCookie("ds_user_id");
+    const cookieCSRFToken = getCookie("csrftoken");
     
     console.log(`Starting ${listType} scrape...`);
 
     while (hasMore) {
-        let url = `https://www.instagram.com/api/v1/friendships/${getCookie("ds_user_id")}/${listType}/?count=25&search_surface=follow_list_page`;
+        let url = `https://www.instagram.com/api/v1/friendships/${cookieUserId}/${listType}/?count=25&search_surface=follow_list_page`;
         if (nextMaxId) url += `&max_id=${nextMaxId}`;
 
         try {
             const response = await fetch(url, {
                 headers: {
                     "X-IG-App-Id": APP_ID,
-                    "X-CSRFToken": getCookie("csrftoken") 
+                    "X-CSRFToken": cookieCSRFToken
                 }, 
                 credentials: "include",
             });
